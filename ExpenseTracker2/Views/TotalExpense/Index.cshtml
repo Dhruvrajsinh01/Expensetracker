@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ExpenseTracker2.Models.TotalExpense>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.TotalLimit)</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalLimit)
+            @Html.ActionLink("Edit", "Edit", new { id = item.TotalLimit }) |
+            @Html.ActionLink("Details", "Details", new { id = item.TotalLimit }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.TotalLimit })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FamilyExpenseDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="C__EFMigrationsHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+    </Key>
+    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CategoryExpenseLimit" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Expenses" Relationship="Self.FK_Expenses_Categories_CategoryId" FromRole="Categories" ToRole="Expenses" />
+  </EntityType>
+  <EntityType Name="Expenses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Amount" Type="Double" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Expenses_Categories_CategoryId" FromRole="Expenses" ToRole="Categories" />
+  </EntityType>
+  <EntityType Name="TotalExpense">
+    <Key>
+      <PropertyRef Name="TotalLimit" />
+    </Key>
+    <Property Name="TotalLimit" Type="Double" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Expenses_Categories_CategoryId">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Expenses" Type="FamilyExpenseDBModel.Expenses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="Expenses">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FamilyExpenseDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__EFMigrationsHistory" EntityType="Self.C__EFMigrationsHistory" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Expenses" EntityType="FamilyExpenseDBModel.Expenses" />
+    <EntitySet Name="TotalExpenses" EntityType="Self.TotalExpense" />
+    <AssociationSet Name="FK_Expenses_Categories_CategoryId" Association="Self.FK_Expenses_Categories_CategoryId">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Expenses" EntitySet="Expenses" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
